@@ -1,23 +1,48 @@
 {% extends "base.html" %}
+
 {% block content %}
-<div class="card shadow-sm">
-  <div class="card-header bg-success text-white">Stock Market</div>
-  <div class="card-body">
-    <p>Browse available stocks and place buy/sell orders.</p>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Ticker</th><th>Company</th><th>Price</th><th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>MSFT</td><td>Microsoft</td><td>$300</td>
-          <td><button class="btn btn-sm btn-primary">Buy</button>
-              <button class="btn btn-sm btn-danger">Sell</button></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+  <h1>Stock Market</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+
+  <table class="table">
+    <tr><th>Symbol</th><th>Price</th><th>Action</th></tr>
+
+    <tr>
+      <td>AAPL</td>
+      <td>$150</td>
+      <td>
+        <form action="{{ url_for('buy_stock', stock_id=1) }}" method="POST">
+          <input type="number" name="quantity" value="1" min="1" class="form-control d-inline" style="width: 80px;">
+          <button class="btn btn-primary">Buy</button>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td>TSLA</td>
+      <td>$250</td>
+      <td>
+        <form action="{{ url_for('buy_stock', stock_id=2) }}" method="POST">
+          <input type="number" name="quantity" value="1" min="1" class="form-control d-inline" style="width: 80px;">
+          <button class="btn btn-primary">Buy</button>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td>GOOG</td>
+      <td>$2800</td>
+      <td>
+        <form action="{{ url_for('buy_stock', stock_id=3) }}" method="POST">
+          <input type="number" name="quantity" value="1" min="1" class="form-control d-inline" style="width: 80px;">
+          <button class="btn btn-primary">Buy</button>
+        </form>
+      </td>
+    </tr>
+  </table>
+
+  <a href="{{ url_for('portfolio') }}" class="btn btn-secondary">View Portfolio</a>
 {% endblock %}
