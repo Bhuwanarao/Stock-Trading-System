@@ -2,6 +2,7 @@
 venv/
 
 # Byte-compiled / cached files
+
 _pycache_/
 *.py[cod]
 *$py.class
@@ -21,4 +22,5 @@ _pycache_/
 
 # OS files
 .DS_Store
+
 Thumbs.db

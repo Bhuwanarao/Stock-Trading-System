@@ -1,19 +1,24 @@
 {% extends "base.html" %}
+
 {% block content %}
-<div class="card shadow-sm">
-  <div class="card-header bg-primary text-white">Portfolio</div>
-  <div class="card-body">
-    <p>Your current portfolio overview will be displayed here.</p>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Ticker</th><th>Quantity</th><th>Avg Cost</th><th>Current Price</th><th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>AAPL</td><td>10</td><td>$150</td><td>$165</td><td>$1,650</td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+  <h1>Your Portfolio</h1>
+  <p><strong>Funds:</strong> ${{ user.funds }}</p>
+
+  <table class="table">
+    <tr><th>Stock</th><th>Quantity</th><th>Action</th></tr>
+    {% for item in user.portfolio %}
+    <tr>
+      <td>{{ item.stock.symbol }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>
+        <form action="{{ url_for('sell_stock', portfolio_id=item.id) }}" method="POST">
+          <input type="number" name="quantity" value="1" min="1" class="form-control d-inline" style="width: 80px;">
+          <button class="btn btn-danger">Sell</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3">No stocks in portfolio</td></tr>
+    {% endfor %}
+  </table>
 {% endblock %}
