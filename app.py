@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 # Configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Chikku04mysql@localhost/stock_trading_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'your-secret-key'
 
@@ -55,25 +54,6 @@ def portfolio():
     user = User.query.first()
     return render_template("portfolio.html", user=user)
 
-@app.route("/sell/<int:portfolio_id>", methods=["POST"])
-def sell_stock(portfolio_id):
-    portfolio_item = Portfolio.query.get_or_404(portfolio_id)
-    user = portfolio_item.user
-    qty = int(request.form["quantity"])
-
-    if portfolio_item.quantity >= qty:
-        portfolio_item.quantity -= qty
-        user.funds += portfolio_item.stock.price * qty
-
-        if portfolio_item.quantity == 0:
-            db.session.delete(portfolio_item)
-
-        db.session.commit()
-        flash("Stock sold successfully!", "success")
-    else:
-        flash("Not enough shares to sell!", "danger")
-
-    return redirect(url_for("portfolio"))
 
 
 @app.route("/funds")
@@ -93,5 +73,3 @@ def settings():
     return render_template("settings.html")
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
