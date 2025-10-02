@@ -1,2 +1,6 @@
 flask
 Bootstrap-Flask
+cryptography
+pymysql
+sqlalchemy-utils
+flask_sqlalchemy
