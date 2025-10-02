@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<<<<<<< HEAD
   <h1>Your Portfolio</h1>
   <p><strong>Funds:</strong> ${{ user.funds }}</p>
 
@@ -21,4 +22,82 @@
     <tr><td colspan="3">No stocks in portfolio</td></tr>
     {% endfor %}
   </table>
+=======
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h3 class="mb-0">Portfolio</h3>
+    <div>
+      {% if session.username %}
+        <span class="badge bg-secondary">Logged in as {{ session.username }}{% if session.role %} ({{ session.role }}){% endif %}</span>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title text-muted">Cash Balance</h6>
+          <div class="h4 mb-0">${{ '%.2f' | format(cash or 0) }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title text-muted">Stock Value</h6>
+          <div class="h4 mb-0">${{ '%.2f' | format(total_stock_value or 0) }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title text-muted">Total Value</h6>
+          <div class="h4 mb-0">${{ '%.2f' | format(total_value or 0) }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Holdings</h5>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Ticker</th>
+              <th class="text-end">Qty</th>
+              <th class="text-end">Avg Cost</th>
+              <th class="text-end">Last</th>
+              <th class="text-end">Value</th>
+              <th class="text-end">P/L</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if rows and rows|length > 0 %}
+              {% for r in rows %}
+              <tr>
+                <td>{{ r.ticker }}</td>
+                <td class="text-end">{{ r.qty }}</td>
+                <td class="text-end">${{ '%.2f' | format(r.avg_cost or 0) }}</td>
+                <td class="text-end">${{ '%.2f' | format(r.last or 0) }}</td>
+                <td class="text-end">${{ '%.2f' | format(r.value or 0) }}</td>
+                <td class="text-end">
+                  {% set pl = r.pl or 0 %}
+                  <span class="{{ 'text-success' if pl >= 0 else 'text-danger' }}">
+                    ${{ '%.2f' | format(pl) }}
+                  </span>
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr><td colspan="6" class="text-center text-muted">No holdings yet.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+>>>>>>> Bhuwana/initial-templates
 {% endblock %}

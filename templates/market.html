@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<<<<<<< HEAD
   <h1>Stock Market</h1>
 
   {% with messages = get_flashed_messages(with_categories=true) %}
@@ -46,3 +47,109 @@
 
   <a href="{{ url_for('portfolio') }}" class="btn btn-secondary">View Portfolio</a>
 {% endblock %}
+=======
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h2 class="mb-0">Stock Market</h2>
+  <small class="text-muted">Create new stocks and view current list</small>
+</div>
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="mb-3">
+      {% for cat, msg in messages %}
+        <div class="alert alert-{{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<div class="row g-4">
+  
+  <div class="col-12 col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Add New Stock</h5>
+        <form action="{{ url_for('market_add_stock') }}" method="post" novalidate>
+          <div class="mb-3">
+            <label class="form-label">Ticker</label>
+            <input type="text" name="ticker" class="form-control" placeholder="AAPL" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Company Name</label>
+            <input type="text" name="company_name" class="form-control" placeholder="Apple Inc." required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Initial Price ($)</label>
+            <input type="number" step="0.01" name="initial_price" class="form-control" placeholder="150.00" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Volume</label>
+            <input type="number" name="volume" class="form-control" placeholder="1000000" required>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Create Stock</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="col-12 col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h5 class="card-title mb-0">Available Stocks</h5>
+          <small class="text-muted">Showing {{ stocks|length }} item{{ '' if stocks|length == 1 else 's' }}</small>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-sm align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Ticker</th>
+                <th>Company</th>
+                <th class="text-end">Price</th>
+                <th class="text-end">High</th>
+                <th class="text-end">Low</th>
+                <th class="text-end">Volume</th>
+                <th>Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for s in stocks %}
+              <tr>
+                <td class="fw-semibold">{{ s.StockName }}</td>
+                <td>
+                  {% if s.company and s.company.CompanyName %}
+                    {{ s.company.CompanyName }}
+                  {% else %}
+                    <span class="text-muted">—</span>
+                  {% endif %}
+                </td>
+                <td class="text-end">${{ '%.2f'|format(s.CurrentPrice) }}</td>
+                <td class="text-end">${{ '%.2f'|format(s.DailyHigh) }}</td>
+                <td class="text-end">${{ '%.2f'|format(s.DailyLow) }}</td>
+                <td class="text-end">{{ "{:,}".format(s.Volume or 0) }}</td>
+                <td>
+                  {% if s.LastUpdated %}
+                    {{ s.LastUpdated.strftime('%Y-%m-%d %H:%M') }}
+                  {% else %}
+                    <span class="text-muted">—</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% else %}
+              <tr><td colspan="7" class="text-center text-muted py-4">No stocks yet. Add one on the left.</td></tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+>>>>>>> Bhuwana/initial-templates
