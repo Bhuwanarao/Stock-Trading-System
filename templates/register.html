@@ -2,24 +2,41 @@
 {% block content %}
 <div class="d-flex justify-content-center">
   <div class="container p-4" style="max-width: 480px; background:#6699A1; border-radius:10px;">
-    <h2 class="text-white text-center mb-3">Register</h2>
+    
+    {% if session.username %}
+      <!-- Already logged in -->
+      <h2 class="text-white text-center mb-3">You are already registered</h2>
+      <p class="text-white text-center mb-3">
+        Logged in as <strong>{{ session.username }}</strong>
+        {% if session.role %} ({{ session.role }}){% endif %}.
+      </p>
+      <div class="d-flex justify-content-center">
+        <a class="btn btn-dark me-2" href="{{ url_for('portfolio_page') }}">Go to Portfolio</a>
+        <a class="btn btn-outline-light" href="{{ url_for('logout') }}">Logout</a>
+      </div>
 
-    {% if msg %}
-      <div class="text-white fw-bold mb-2">{{ msg }}</div>
+    {% else %}
+      <!-- Registration form -->
+      <h2 class="text-white text-center mb-3">Register</h2>
+
+      {% if msg %}
+        <div class="text-white fw-bold mb-2 text-center">{{ msg }}</div>
+      {% endif %}
+
+      <form action="{{ url_for('register') }}" method="post">
+        <input class="form-control mb-3" type="text" name="full_name" placeholder="Enter Full Name" required>
+        <input class="form-control mb-3" type="text" name="username" placeholder="Enter Username" required>
+        <input class="form-control mb-3" type="email" name="email" placeholder="Enter Email" required>
+        <input class="form-control mb-3" type="password" name="password" placeholder="Enter Password" required>
+        <button class="btn btn-dark w-100" type="submit">Create Account</button>
+      </form>
+
+      <p class="text-center mt-3 mb-0">
+        <span class="text-white">Already have an account?</span>
+        <a class="fw-bold" href="{{ url_for('login') }}">Login here</a>
+      </p>
     {% endif %}
 
-    <form action="{{ url_for('register') }}" method="post">
-      <input class="form-control mb-3" type="text" name="full_name" placeholder="Enter Full Name" required>
-      <input class="form-control mb-3" type="text" name="username" placeholder="Enter Username" required>
-      <input class="form-control mb-3" type="email" name="email" placeholder="Enter Email" required>
-      <input class="form-control mb-3" type="password" name="password" placeholder="Enter Password" required>
-      <button class="btn btn-dark w-100" type="submit">Create Account</button>
-    </form>
-
-    <p class="text-center mt-3 mb-0">
-      <span class="text-white">Already have an account?</span>
-      <a class="fw-bold" href="{{ url_for('login') }}">Login here</a>
-    </p>
   </div>
 </div>
 {% endblock %}

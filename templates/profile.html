@@ -1,20 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="card shadow-sm">
-  <div class="card-header bg-secondary text-white">Profile</div>
   <div class="card-body">
-    <form>
-      <div class="mb-3">
-        <label class="form-label">Full Name</label>
-        <input type="text" class="form-control" value="FirstName Lastname">
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input type="email" class="form-control" value="john@example.com">
-      </div>
-      <button class="btn btn-primary">Update Profile</button>
-    </form>
+    <h1 class="h4 mb-3">Profile</h1>
+    <ul class="list-unstyled mb-0">
+      <li><strong>Username:</strong> {{ session.username or (customer.Username if customer else '') }}</li>
+      <li><strong>Role:</strong> {{ session.role or 'customer' }}</li>
+      {% if customer %}
+        <li><strong>Full Name:</strong> {{ customer.FullName }}</li>
+        <li><strong>Email:</strong> {{ customer.Email }}</li>
+        <li><strong>Joined:</strong> {{ customer.CreatedAt.strftime('%Y-%m-%d %H:%M') if customer.CreatedAt else '' }}</li>
+      {% endif %}
+    </ul>
   </div>
 </div>
 {% endblock %}
-
+ç

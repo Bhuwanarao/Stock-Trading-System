@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Admin · MY401{% endblock %}
+{% block content %}
+<h1 class="h4 mb-3">Admin Dashboard</h1>
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th><th>Username</th><th>Role</th><th style="width:280px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td>{{ u.id }}</td>
+          <td>{{ u.username }}</td>
+          <td>
+            <form class="d-flex gap-2" method="post" action="{{ url_for('change_role', user_id=u.id) }}">
+              <select class="form-select form-select-sm" name="role">
+                <option value="user"  {% if u.role == 'user' %}selected{% endif %}>user</option>
+                <option value="admin" {% if u.role == 'admin' %}selected{% endif %}>admin</option>
+              </select>
+              <button class="btn btn-sm btn-outline-primary" type="submit">Update</button>
+            </form>
+          </td>
+          <td>
+            <form method="post" action="{{ url_for('delete_user', user_id=u.id) }}" onsubmit="return confirm('Delete {{ u.username }}?');">
+              <button class="btn btn-sm btn-outline-danger" type="submit" {% if current_user.id == u.id %}disabled title="Cannot delete yourself"{% endif %}>Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="text-center text-muted py-4">No users found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

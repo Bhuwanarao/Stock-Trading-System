@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>{{ title or "Stock Trading System" }}</title>
+<title>{% block title %}{{ title or "Stock Trading System" }}{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Bootstrap CSS -->
   <link
@@ -37,7 +37,23 @@
             </li>
             <li class="nav-item"><a class="btn btn-outline-light btn-sm" href="{{ url_for('logout') }}">Logout</a></li>
           {% else %}
-            <li class="nav-item me-2"><a class="btn btn-outline-light btn-sm" href="{{ url_for('login') }}">Login</a></li>
+            <!-- Inline login dropdown -->
+            <li class="nav-item dropdown me-2">
+              <a class="btn btn-outline-light btn-sm dropdown-toggle" href="#" id="loginDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Login
+              </a>
+              <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 250px;">
+                <form method="post" action="{{ url_for('login') }}">
+                  <div class="mb-2">
+                    <input type="text" class="form-control form-control-sm" name="username" placeholder="Username" required>
+                  </div>
+                  <div class="mb-2">
+                    <input type="password" class="form-control form-control-sm" name="password" placeholder="Password" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-sm w-100">Login</button>
+                </form>
+              </div>
+            </li>
             <li class="nav-item"><a class="btn btn-primary btn-sm" href="{{ url_for('register') }}">Register</a></li>
           {% endif %}
         </ul>

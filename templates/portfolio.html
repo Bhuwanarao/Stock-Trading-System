@@ -4,7 +4,16 @@
     <h3 class="mb-0">Portfolio</h3>
     <div>
       {% if session.username %}
-        <span class="badge bg-secondary">Logged in as {{ session.username }}{% if session.role %} ({{ session.role }}){% endif %}</span>
+        <span class="badge bg-secondary">
+          Logged in as {{ session.username }}{% if session.role %} ({{ session.role }}){% endif %}
+        </span>
+      {% else %}
+        <!-- Inline login form if not logged in -->
+        <form class="d-flex gap-2" method="post" action="{{ url_for('login') }}">
+          <input type="text" class="form-control form-control-sm" name="username" placeholder="Username" required>
+          <input type="password" class="form-control form-control-sm" name="password" placeholder="Password" required>
+          <button type="submit" class="btn btn-primary btn-sm">Login</button>
+        </form>
       {% endif %}
     </div>
   </div>
